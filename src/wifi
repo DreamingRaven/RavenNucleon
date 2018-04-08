@@ -1,0 +1,80 @@
+#!/bin/bash
+# wifi : George Onoufriou : wifi config editor
+
+# to streamline debug output
+bashName="wifi"
+echo # yes yes I know
+echo "[ ${bashName} ] CWD: ${PWD}"
+
+# handle cli args using getopts functionality
+while getopts ":dhr:t:w:S:P:" opt; do #TODO: add help -h
+    case ${opt} in
+
+        d) # debug
+            isDebug=1
+            ;;
+        h) # help
+            isHelp=1
+            ;;
+        r) # pi zero root
+            rootZero=${OPTARG}
+            ;;
+        t) # temp dir name
+            zeroTempDir=${OPTARG}
+            ;;
+        w) # wifi config
+            wifiConfig=${OPTARG}
+            ;;
+        S) # SSID
+            ssid=${OPTARG}
+            ;;
+        P) # Password
+            pass=${OPTARG}
+            ;;
+        \?)
+            echo "[ ${bashName} ] Invalid option: ${OPTARG}" 1>&2
+            exit 1
+            ;;
+        :)
+            echo "[ ${bashName} ] Invalid option: ${OPTARG} requires argument" 1>&2
+            exit 1
+            ;;
+    esac
+done
+shift $((OPTIND -1))
+
+if [ ${isDebug} ]; then
+    echo "[ ${bashName} ] debug: ${isDebug}"
+    echo "[ ${bashName} ] help: ${isHelp}"
+    echo "[ ${bashName} ] rootZero: ${rootZero}"
+    echo "[ ${bashName} ] zeroTempDir: ${zeroTempDir}"
+    echo "[ ${bashName} ] wifiConfig: ${wifiConfig}"
+    echo "[ ${bashName} ] SSID: ${ssid}"
+    echo "[ ${bashName} ] pass: ${pass}"
+fi
+
+if [ ${zeroTempDir} ]; then
+
+cat << EOF >> ${zeroTempDir}/etc/systemd/network/wlan0.network
+[Match]
+Name=wlan0
+
+[Network]
+DHCP=yes
+EOF
+
+#ssid=${ssid:-""}
+#pass=${pass:-""}
+
+ssid=""
+pass=""
+
+wpa_passphrase "${ssid}" "${pass}" > ${zeroTempDir}/etc/wpa_supplicant/wpa_supplicant-wlan0.conf
+
+ln -s \
+   /usr/lib/systemd/system/wpa_supplicant@.service \
+   ${zeroTempDir}/etc/systemd/system/multi-user.target.wants/wpa_supplicant@wlan0.service
+
+echo Unmounting
+
+fi
