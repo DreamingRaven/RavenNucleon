@@ -9,9 +9,21 @@
 
 
 import os, sys, json
-from src import helpers
+from src.helpers import argz
+from src.log import Log
 
-# this file serves as the RavenNucleon entry point
+# declaring usefull global variables
+home = os.path.expanduser("~")
+name = os.path.basename(sys.argv[0])
+prePend = "[ " + name + " ] "
+description = name + "; " + "Python script entry point for RavenNucleon\
+ so that archlinux may reign supreme on whatever you choose for Nucleon\
+to install it on."
+# log = helpers.log()
 
-args = helpers.argz(sys.argv[1:])
-print(json.loads(json.dumps(args)))
+# capture arguments in dict
+args = argz(sys.argv[1:], description=description)
+# create json version of dict to pass to bash
+args_json = json.loads(json.dumps(args))
+
+# helpers.log(args_json, status=0)

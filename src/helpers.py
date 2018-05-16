@@ -21,11 +21,33 @@ def argz(argv=None, description=None):
 
     parser = argparse.ArgumentParser(description=description)
 
-    parser.add_argument("-d", "--device",       default="", required=True,
-        help="device name to install archlinux on e.g: \'/dev/sdd\'")
-    parser.add_argument("-v", "--verbose",      default=0, type=int,
+    # creating argument groups
+    optional = parser._action_groups.pop() # popping -h off
+    required = parser.add_argument_group('required arguments')
+
+
+    # creating arguments in required group
+    required.add_argument("-d", "--device",       default="", required=True,
+        help="device name to install archlinux on e.g: \'/dev/sdd\' or \
+         '/dev/sdd1' for a specific partition")
+
+    # creating arguments in optional group
+    optional.add_argument("-v", "--verbose",      default=0, type=int,
         help="sets verbosity level; how much information is displayed")
-    parser.add_argument("--noconfirm", default=False, action="store_true",
+    optional.add_argument("--noconfirm", default=False, action="store_true",
         help="for those that live life on the... ledge")
 
+    parser._action_groups.append(optional) # pushing -h back on with extras
     return vars(parser.parse_args(argv))
+
+def log(message, status=0):
+    if(status==-1):
+        None # only for the cool dudes
+    elif(status==0):
+        print(prePend, " [ info ]", message)
+    elif(status==1):
+        print(prePend, " [ warn ]", message)
+    elif(status==2):
+        print(prePend, " [ error ]", message)
+    elif(status==3):
+        print(prePend, " [ debug ]", message)
