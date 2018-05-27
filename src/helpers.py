@@ -3,7 +3,7 @@
 # @Project: RavenNucleon
 # @Filename: helpers.py
 # @Last modified by:   GeorgeRaven
-# @Last modified time: 2018-05-26
+# @Last modified time: 2018-05-27
 # @License: Please see LICENSE file in project root
 
 
@@ -50,9 +50,25 @@ def logger():
 # barebones installer to be used as fallback if full
 # featured version is not availiable
 def installer():
-    None
+
+    updaterUrl = "https://github.com/DreamingRaven/RavenPythonLib"
+
+    if (os.path.exists("./" + basename(updaterUrl)) == False):
+        try:
+            None
+        except:
+            None
 
 # barebones updater to be used as fallback if full
 # featured version is not availiable
 def updater():
-    None
+    # attempt self update if permission availiable
+    try:
+        None
+    except:
+        None
+    # update any dependancies
+    try:
+        None
+    except:
+        None
