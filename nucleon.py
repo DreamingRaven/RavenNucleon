@@ -2,22 +2,24 @@
 # @Date:   2018-05-16
 # @Project: RavenNucleon
 # @Filename: nucleon.py
-# @Last modified by:   GeorgeRaven
-# @Last modified time: 2018-05-17
+# @Last modified by:   georgeraven
+# @Last modified time: 2018-05-28
 # @License: Please see LICENSE file in project root
 
 
 
-import os, sys, json
-from src.helpers import argz
+import os, sys, json, inspect
+from src.helpers import argz, logger, installer, updater
 from src.log import Log
 
 def main():
     None
-    
+
 # declaring usefull global variables
 home = os.path.expanduser("~")
 name = os.path.basename(sys.argv[0])
+fileAndPath = inspect.getframeinfo(inspect.currentframe()).filename
+path = os.path.dirname(os.path.abspath(fileAndPath))
 prePend = "[ " + name + " ] "
 description = name + "; " + "Python script entry point for RavenNucleon\
  so that archlinux may reign supreme on whatever you choose for Nucleon\
@@ -31,6 +33,9 @@ log = Log(logLevel=args["loglevel"])
 args_json = json.loads(json.dumps(args))
 # test logger and output debug
 log.print("init success") # default level is 3 (debug)
+
+installer(path=path)
+updater(path=path)
 
 # if level3 (debug) prepare for some verbose shnitzel
 if(args["loglevel"] >= 3):

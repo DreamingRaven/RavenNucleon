@@ -2,8 +2,8 @@
 # @Date:   2018-05-16
 # @Project: RavenNucleon
 # @Filename: helpers.py
-# @Last modified by:   GeorgeRaven
-# @Last modified time: 2018-05-27
+# @Last modified by:   georgeraven
+# @Last modified time: 2018-05-28
 # @License: Please see LICENSE file in project root
 
 
@@ -41,34 +41,54 @@ def argz(argv=None, description=None):
     parser._action_groups.append(optional) # pushing -h back on with extras
     return vars(parser.parse_args(argv))
 
+
+
 # conditional overide of print to custom logger, if availiable
 def logger():
     None
     # in try except try to import module and return it as print function
     # else return standard print
 
+
+
 # barebones installer to be used as fallback if full
 # featured version is not availiable
-def installer():
+def installer(path="./",
+              urls=["https://github.com/DreamingRaven/RavenPythonLib"]):
+    # neat trick to always ensure path ends in seperator '/' by appending empty
+    path = os.path.join(path, "") # e.g "/usr/bin" vs "/usr/bin/"
 
-    updaterUrl = "https://github.com/DreamingRaven/RavenPythonLib"
+    for url in urls:
+        if (os.path.exists(path + os.path.basename(url)) == False):
+            print(prePend, "find=false installing:",
+                path + os.path.basename(url))
+            try:
+                os.system("cd " + path + "; git clone " + url)
+            except:
+                print(prePend,
+                    "Could not install:", url , "to",
+                    path + os.path.basename(url) )
 
-    if (os.path.exists("./" + basename(updaterUrl)) == False):
-        try:
-            None
-        except:
-            None
+
 
 # barebones updater to be used as fallback if full
 # featured version is not availiable
-def updater():
+def updater(path="./",
+            urls=["https://github.com/DreamingRaven/RavenPythonLib"]):
+    # neat trick to force filenames to always end in seperator "/"
+    path = os.path.join(path, "") # e.g "/usr/bin" vs "/usr/bin/"
+
     # attempt self update if permission availiable
     try:
-        None
+        print(prePend, "Updating self:")
+        os.system("cd " + path + "; git pull")
     except:
-        None
-    # update any dependancies
-    try:
-        None
-    except:
-        None
+        print(prePend + "Could not update self")
+
+    for url in urls:
+        # update any dependancies
+        print(prePend, "Updating", os.path.basename(url) + ":" )
+        try:
+            os.system("cd " + path + os.path.basename(url) + "; git pull")
+        except:
+            None
