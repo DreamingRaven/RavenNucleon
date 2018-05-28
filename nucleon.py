@@ -46,4 +46,4 @@ else:
         main()
         # raise ValueError('A very specific bad thing happened.')
     except:
-        log.print(str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]), 2)
+        print(str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]), 2)
