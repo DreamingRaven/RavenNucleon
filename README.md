@@ -8,7 +8,7 @@ equipped to solve any of the issues that ol' Archie can throw your way.
 ## Getting St4rt3d
 Currentley this is not on the AUR or any pacage manager (pacman4life), after this project is
 working as expected it will have a nicer installation process. For now, simply
-download and run:
+download and run the following, which will guide you further:
 
 ```
 python nucleon.py
