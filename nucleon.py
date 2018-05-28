@@ -27,13 +27,14 @@ to install it on."
 
 # capture arguments in dict
 args = argz(sys.argv[1:], description=description)
-# create logger
-log = Log(logLevel=args["loglevel"])
 # create json version of dict to pass to bash
 args_json = json.loads(json.dumps(args))
-# test logger and output debug
-log.print("init success") # default level is 3 (debug)
 
+# setting up fallback logger
+log = Log(logLevel=args["loglevel"])
+print = log.print # overiding default print with fallback logger
+
+# installing, updating, upgrading
 installer(path=path)
 updater(path=path)
 
