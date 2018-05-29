@@ -2,7 +2,7 @@
 # @Date:   2018-05-16
 # @Project: RavenNucleon
 # @Filename: helpers.py
-# @Last modified by:   archer
+# @Last modified by:   georgeraven
 # @Last modified time: 2018-05-29
 # @License: Please see LICENSE file in project root
 
@@ -53,7 +53,7 @@ def logger():
 
 # barebones installer to be used as fallback if full
 # featured version is not availiable
-def installer(path="./",
+def installer(path="./", #TODO: implement call to Gupdater in try-catch
               urls=["https://github.com/DreamingRaven/RavenPythonLib"]):
     # neat trick to always ensure path ends in seperator '/' by appending empty
     path = os.path.join(path, "") # e.g "/usr/bin" vs "/usr/bin/"
@@ -73,7 +73,7 @@ def installer(path="./",
 
 # barebones updater to be used as fallback if full
 # featured version is not availiable
-def updater(path="./",
+def updater(path="./", #TODO: implent call to Gupdater in try-catch
             urls=["https://github.com/DreamingRaven/RavenPythonLib"]):
 
     # neat trick to force filenames to always end in seperator "/"

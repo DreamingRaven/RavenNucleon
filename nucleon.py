@@ -1,9 +1,10 @@
+#!/usr/bin/env python3
 # @Author: George Onoufriou <GeorgeRaven>
 # @Date:   2018-05-16
 # @Project: RavenNucleon
 # @Filename: nucleon.py
 # @Last modified by:   georgeraven
-# @Last modified time: 2018-05-28
+# @Last modified time: 2018-05-29
 # @License: Please see LICENSE file in project root
 
 
@@ -46,5 +47,6 @@ else:
     try:
         main()
         # raise ValueError('A very specific bad thing happened.')
+
     except:
         print(str(sys.exc_info()[0]) + " " + str(sys.exc_info()[1]), 2)
