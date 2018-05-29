@@ -2,8 +2,8 @@
 # @Date:   2018-05-16
 # @Project: RavenNucleon
 # @Filename: helpers.py
-# @Last modified by:   georgeraven
-# @Last modified time: 2018-05-28
+# @Last modified by:   archer
+# @Last modified time: 2018-05-29
 # @License: Please see LICENSE file in project root
 
 
@@ -75,6 +75,7 @@ def installer(path="./",
 # featured version is not availiable
 def updater(path="./",
             urls=["https://github.com/DreamingRaven/RavenPythonLib"]):
+
     # neat trick to force filenames to always end in seperator "/"
     path = os.path.join(path, "") # e.g "/usr/bin" vs "/usr/bin/"
 
@@ -91,4 +92,4 @@ def updater(path="./",
         try:
             os.system("cd " + path + os.path.basename(url) + "; git pull")
         except:
-            None
+            print(prePend + "Could not update dependency: " + url)
