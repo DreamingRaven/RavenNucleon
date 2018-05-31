@@ -35,7 +35,9 @@ def argz(argv=None, description=None):
          '/dev/sdd1' for a specific partition")
 
     # creating arguments in optional group
-    optional.add_argument("-l", "--loglevel",      default=0, type=int,
+    optional.add_argument("-i", "--image", default="",
+        help="allows passing of URL which points to location of image to flash")
+    optional.add_argument("-v", "--loglevel",      default=0, type=int,
         help="sets verbosity level; how much information is displayed")
     optional.add_argument("--noconfirm", default=False, action="store_true",
         help="for those that live life on the... ledge")
@@ -57,7 +59,7 @@ def logger():
 # featured version is not availiable
 def installer(path="./", #TODO: implement call to Gupdater in try-catch
               urls=["https://github.com/DreamingRaven/RavenPythonLib"]):
-              
+
     # neat trick to always ensure path ends in seperator '/' by appending empty
     path = os.path.join(path, "") # e.g "/usr/bin" vs "/usr/bin/"
 
