@@ -35,7 +35,7 @@ def argz(argv=None, description=None):
          '/dev/sdd1' for a specific partition")
 
     # creating arguments in optional group
-    optional.add_argument("-i", "--image", default="",
+    optional.add_argument("-i", "--image-url", default="",
         help="allows passing of URL which points to location of image to flash")
     optional.add_argument("-v", "--loglevel",      default=0, type=int,
         help="sets verbosity level; how much information is displayed")
@@ -98,3 +98,11 @@ def updater(path="./", #TODO: implent call to Gupdater in try-catch
             os.system("cd " + path + os.path.basename(url) + "; git pull")
         except:
             print(prePend + "Could not update dependency: " + url)
+
+def isBlockDevice(path):
+    import stat
+
+    try:
+        return stat.S_ISBLK(os.stat(path).st_mode)
+    except:
+        return False

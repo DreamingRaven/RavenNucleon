@@ -10,18 +10,23 @@
 
 
 import os, sys, json, inspect
-from src.helpers import argz, logger, installer, updater
+from src.helpers import argz, logger, installer, updater, isBlockDevice
 from src.log import Log
 
 
 
 def main():
-    
-    print("Hello, world!", 3 )
-    if(args["image"]):
-        None
 
+    print("Init success, hello world!", 3)
 
+    print(prePend + " checking if: " + args["device"] + " exists", -1)
+    isBlock = isBlockDevice(args["device"])
+    if(isBlock):
+        if(args["image"] != "") and (args[""]):
+            None
+    else:
+        print("'" + args["device"] + "' is not a valid device, check if it exists", 2)
+        print("could not find: " + args["device"], -1)
 
 # declaring usefull global variables
 home = os.path.expanduser("~")
