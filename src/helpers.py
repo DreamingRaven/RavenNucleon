@@ -3,7 +3,7 @@
 # @Project: RavenNucleon
 # @Filename: helpers.py
 # @Last modified by:   georgeraven
-# @Last modified time: 2018-05-29
+# @Last modified time: 2018-05-31
 # @License: Please see LICENSE file in project root
 
 
@@ -13,6 +13,8 @@ import os, sys
 home = os.path.expanduser("~")
 name = os.path.basename(sys.argv[0])
 prePend = "[ " + name + " ] "
+
+
 
 # project specific arguments
 def argz(argv=None, description=None):
@@ -55,6 +57,7 @@ def logger():
 # featured version is not availiable
 def installer(path="./", #TODO: implement call to Gupdater in try-catch
               urls=["https://github.com/DreamingRaven/RavenPythonLib"]):
+              
     # neat trick to always ensure path ends in seperator '/' by appending empty
     path = os.path.join(path, "") # e.g "/usr/bin" vs "/usr/bin/"
 
