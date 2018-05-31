@@ -16,6 +16,8 @@ from src.log import Log
 
 
 def main():
+    
+    print("Hello, world!", 3 )
     if(args["image"]):
         None
 
@@ -44,7 +46,7 @@ log = Log(logLevel=args["loglevel"])
 print = log.print
 
 # attempting update/ falling back
-try:
+try: # TODO: devise a method to make erros in nested try, catch
     from RavenPythonLib.updaters.gitUpdate import Gupdater
     nucleon = Gupdater(path=path, urls=dependancies)
     nucleon.install()
@@ -57,10 +59,14 @@ except:
 
 # attempting set logger from external lib/ falling back
 try:
-    None
+    from RavenPythonLib.loggers.basicLog import Log
+    log = Log(logLevel=args["loglevel"])
+    print = log.print # note no '()' as function address desired not itself
 except:
     log = Log(logLevel=args["loglevel"])
     print = log.print
+    print("Main logger could not be loaded, falling back: " +
+        str(sys.exc_info()[1]), 1)
 
 # if level3 (debug) prepare for some verbose shnitzel
 if(args["loglevel"] >= 3):
