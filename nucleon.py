@@ -4,7 +4,7 @@
 # @Project: RavenNucleon
 # @Filename: nucleon.py
 # @Last modified by:   georgeraven
-# @Last modified time: 2018-05-29
+# @Last modified time: 2018-05-31
 # @License: Please see LICENSE file in project root
 
 
@@ -15,10 +15,9 @@ from src.log import Log
 
 
 
-
 def main():
-    None
-
+    if(args["image"]):
+        None
 
 
 
@@ -34,17 +33,34 @@ description = name + "; " + "Python script entry point for RavenNucleon\
  so that archlinux may reign supreme on whatever you choose for Nucleon\
 to install it on."
 
+dependancies = ["https://github.com/DreamingRaven/RavenPythonLib"]
+
 # capture arguments in dict then put into json for bash
 args = argz(sys.argv[1:], description=description)
 args_json = json.loads(json.dumps(args))
 
-# setting up fallback logger
+# setting fallback logger here pre-update
 log = Log(logLevel=args["loglevel"])
 print = log.print
 
-# installing, updating, upgrading
-installer(path=path)
-updater(path=path)
+# attempting update/ falling back
+try:
+    from RavenPythonLib.updaters.gitUpdate import Gupdater
+    nucleon = Gupdater(path=path, urls=dependancies)
+    nucleon.install()
+    nucleon.update()
+
+except:
+    print("Gupdater failed, falling back: " + str(sys.exc_info()[1]), 1)
+    installer(path=path, urls=dependancies)
+    updater(path=path, urls=dependancies)
+
+# attempting set logger from external lib/ falling back
+try:
+    None
+except:
+    log = Log(logLevel=args["loglevel"])
+    print = log.print
 
 # if level3 (debug) prepare for some verbose shnitzel
 if(args["loglevel"] >= 3):
