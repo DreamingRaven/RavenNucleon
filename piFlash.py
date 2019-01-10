@@ -17,11 +17,11 @@ import sys
 
 def main(args):
 
-    parentPath = "tempPiFlash"
+    parentPath = "./tempPiFlash"
     rootPath = parentPath + "/root"
     bootPath = parentPath + "/boot"
 
-    # wget thing peeps want
+    wget thing peeps want
     subprocess.call([
         "wget", "http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-latest.tar.gz",
         #"-P", "/dev/shm/piFlash/",
@@ -36,22 +36,32 @@ def main(args):
 
     # make neccessary directories
     subprocess.call([
-        "mkdir", rootPath, bootPath
+        "mkdir", "-p", rootPath, bootPath
+    ])
+
+    # mk vfat
+    subprocess.call([
+        "sudo", "mkfs.vfat", str(args["device"] + "1")
+    ])
+
+    # mk ext4
+    subprocess.call([
+        "sudo", "mkfs.ext4", str(args["device"] + "2")
     ])
 
     # mount root
     subprocess.call([
-        "sudo", "mount", str(args["device"] + "2")
+        "sudo", "mount", str(args["device"] + "2"), rootPath
     ])
 
     # mount boot
     subprocess.call([
-        "sudo", "mount", str(args["device"] + "1"),
+        "sudo", "mount", str(args["device"] + "1"), bootPath
     ])
 
     # unpack tar.gz pi file into root
     subprocess.call([
-        "bsdtar", "-xpf", args["tempFile"], "-C", rootPath
+        "sudo", "bsdtar", "-xpf", args["tempFile"], "-C", rootPath
     ])
 
     # move boot stuff to boot from root
@@ -71,7 +81,7 @@ def main(args):
 
     # delete the old things peeps probably dont want to free memory
     subprocess.call([
-        "rm", "-r", args["tempFile"], parentPath
+        "sudo", "rm", "-r", args["tempFile"], parentPath
     ])
 
 
@@ -84,17 +94,17 @@ def argz(argv, description=None):
     parser.add_argument("-p", "--parted", nargs='+',
                         default=[
                             "mklabel", "msdos",
-                            "mkpart", "primary", "fat32", "1MiB", "101MiB",
-                            "mkpart", "primary", "ext4", "101MB", "100%",
+                            "mkpart", "primary", "1MiB", "101MiB",
+                            "mkpart", "primary", "106MiB", "100%",
                         ],
                         help="path to each file desired to be converted")
     parser.add_argument("-d", "--device", required=True,
                         default="",
                         help="device path which is the target of flashing e.g /dev/sda")
-    parser.add_argument("-D", "--devRoot", required=True,
+    parser.add_argument("-D", "--devRoot",
                         default="",
                         help="device path which is the target of dd'ing the ISO")
-    parser.add_argument("-i", "--iso", required=True,
+    parser.add_argument("-i", "--iso",
                         default="http://os.archlinuxarm.org/os/ArchLinuxARM-rpi-latest.tar.gz",
                         help="wget path to iso to be flashed")
 
